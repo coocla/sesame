@@ -1,0 +1,67 @@
+#!/bin/bash
+# chkconfig: 2345 85 20
+# description: Description of the script
+# processname: sesame
+#
+
+config="/etc/sesame/sesame.json"
+service_name="sesame"
+start_cmd="/usr/bin/$service_name"
+
+#if OS is Ubuntu, execute init-functions
+OS=`cat /etc/issue | head -n 1  | awk '{print $1}'`
+if [ "$OS" == "Ubuntu" ] || [ "$OS" == "Debian" ] ; then
+ #echo OS is Ubuntu or Debian
+ . /lib/lsb/init-functions
+ start_cmd="/usr/local/bin/$service_name $config"
+fi
+
+if [ "$OS" == "CentOS" ] ; then
+ #echo OS is CentOS   
+ start_cmd="/usr/bin/$service_name $config"
+fi
+
+if [ "$OS" == "Red" ] ; then
+ #echo OS is Red Hat   
+ start_cmd="/usr/bin/$service_name $config"
+fi
+
+case "$1" in
+        start)
+                $start_cmd
+                output=`ps aux | grep sesame | grep -v grep`
+                if [ "x" == "x$output" ] ; then
+                    echo "Stopped"
+                else
+                    echo "Running"
+                fi
+                ;;
+
+        restart)
+                service sesame stop
+                service sesame start
+                ;;
+
+        stop)
+                ps aux | grep sesame | grep -v grep | awk '{print "kill -9 " $2}' | bash
+                output=`ps aux | grep sesame | grep -v grep`
+                if [ "x" == "x$output" ] ; then
+                    echo "sesame is stopped"
+                else
+                    echo "Stop failed, still Running"
+                fi
+                ;;
+
+        status)
+                output=`ps aux | grep grep sesame | grep -v grep`
+                if [ "x" == "x$output" ] ; then
+                    echo "Stopped"
+                else
+                    echo "Running"
+                fi 
+                ;;
+
+        *)
+                echo "Usage: $0 {start|stop|restart|status}"
+                ;;
+esac

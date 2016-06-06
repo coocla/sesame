@@ -1,0 +1,13 @@
+{
+  "rabbitmq_vhost": "xxx",
+  "queue_username": "xxx|base64", 
+  "rabbitmq_host": "xx.xxx.xxx.xxx"
+  "rabbitmq_up_queue": "channel_up", 
+  "rabbitmq_down_queue": "channel_down", 
+  "rabbitmq_ssl": false, 
+  "queue_password": "xxx", 
+  "agent_id": 1, 
+  "rabbitmq_port": 5672, 
+  "rabbitmq_up_exchange": "channel_up",
+  "rabbitmq_down_exchange": "channel_down"
+}
